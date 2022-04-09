@@ -21,7 +21,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.validation.ValidationError;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -210,7 +210,7 @@ public class ChainedInstrumentation implements Instrumentation {
 
 
         private ChainedInstrumentationState(List<Instrumentation> instrumentations, InstrumentationCreateStateParameters parameters) {
-            instrumentationStates = new LinkedHashMap<>(instrumentations.size());
+            instrumentationStates = new IdentityHashMap<>(instrumentations.size());
             instrumentations.forEach(i -> instrumentationStates.put(i, i.createState(parameters)));
         }
 
