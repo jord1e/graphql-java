@@ -275,7 +275,8 @@ public class PropertyFetchingImpl {
     private boolean isRecord(Class<?> clazz) {
         // https://github.com/openjdk/jdk/blob/3f26d84f6a03030080328e36a1fd1a08c982838c/src/java.base/share/classes/java/lang/Class.java#L3829-L3835
         return "java.lang.Record".equals(clazz.getSuperclass().getName())
-                && (clazz.getModifiers() & Modifier.FINAL) != 0;
+                && (clazz.getModifiers() & Modifier.FINAL) != 0
+                && !"FieldRecord".equals(clazz.getSimpleName());
     }
 
     @SuppressWarnings("SimplifiableIfStatement")
@@ -322,8 +323,12 @@ public class PropertyFetchingImpl {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof CacheKey)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof CacheKey)) {
+                return false;
+            }
             CacheKey cacheKey = (CacheKey) o;
             return Objects.equals(classLoader, cacheKey.classLoader) && Objects.equals(className, cacheKey.className) && Objects.equals(propertyName, cacheKey.propertyName);
         }
@@ -340,10 +345,10 @@ public class PropertyFetchingImpl {
         @Override
         public String toString() {
             return "CacheKey{" +
-                "classLoader=" + classLoader +
-                ", className='" + className + '\'' +
-                ", propertyName='" + propertyName + '\'' +
-                '}';
+                    "classLoader=" + classLoader +
+                    ", className='" + className + '\'' +
+                    ", propertyName='" + propertyName + '\'' +
+                    '}';
         }
     }
 
